@@ -1,0 +1,39 @@
+---
+- name: 'ASA config'
+  hosts: ios
+  connection: local
+  vars_files:
+    - vars/vars.yml
+  gather_facts: false
+  tasks:
+# Logs into to the ASA and runs a show conn command and gathers
+# the CLI output results   
+    - name: Retrieve top talkers 
+      asa_command:
+        commands:
+          - show conn
+        provider:
+          username: "{{ login_user }}"
+          password: "{{ login_pass }}"
+          authorize: yes
+          auth_pass: "{{ enable_pass }}"
+          host: "{{ top_asa }}"
+      register: toptalk_output
+#     become: yes
+#     become_user: www-data
+# Capture standard output from the ASA and dump to a 
+# temp file
+    - name: copy content
+      copy:
+         content: "{{ toptalk_output.stdout }}"
+         dest: "/tmp/toptalk.raw"
+      delegate_to: localhost
+# Run a shell script that sorts the standard output from
+# ASA and returns the top 100 results
+    - name: process content
+      local_action: script files/process.sh
+# Run a python script that converts the ASA output to a HTML
+# table
+    - name: content 2 table
+      local_action: script files/content2table.py
+      

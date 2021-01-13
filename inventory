@@ -1,0 +1,4 @@
+# Replace 10.0.10.1 with the IP of ASA
+
+[ios]
+10.0.10.1
