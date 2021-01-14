@@ -92,10 +92,6 @@ This application uses cron to keep the data from the ASA up to date: Once you ha
 
 Save the file, and the TopTalk page should update every 5 minutes.
 
-***For problems or questions about this script contact:
-Mark Rogers
-mark.rogers@wwt.com***
-
 ## Author
 Mark Rogers, SDN Architect, World Wide Technology
 
